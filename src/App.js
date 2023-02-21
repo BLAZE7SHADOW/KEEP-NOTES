@@ -1,25 +1,72 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Header from "./Header";
+import CreateNote from "./CreateNote";
+import Notes from "./Notes";
+import Footer from "./Footer";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+
+    const [addItem, setAddItem] = useState([]);
+
+    const expand = () => {
+        // const expand = false;
+    }
+
+    const addNote = (note) => {
+
+        if (note.title === "") {
+            //nothing
+        } else {
+            setAddItem((prevData) => {
+                return [note, ...prevData]
+            })
+        }
+    }
+
+    const onDelete = (id) => {
+        setAddItem((oldData) => {
+            return oldData.filter((curData, ind) => {
+                return ind !== id;
+            })
+        })
+    }
+
+    return (
+        <>
+            <div className="main">
+                <Header />
+                <CreateNote
+                    passNote={addNote}
+                    area={expand}
+                />
+
+
+                <div className="all_notes">
+                    {
+                        addItem.map((val, index) => {
+                            return <Notes
+                                key={index}
+                                id={index}
+                                title={val.title}
+                                content={val.content}
+                                deleteItem={onDelete}
+                            />
+                        })
+                    }
+                </div>
+                <Footer />
+            </div>
+        </>
+    );
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
